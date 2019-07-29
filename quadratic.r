@@ -1,10 +1,21 @@
-p0 <- c(0, 0)
-p1 <- c(0, 1)
-p2 <- c(1, 0)
+pts <- matrix(c(0, 0,
+                   0, 1,
+                   1, 0),
+                 nrow = 3,
+                 ncol = 2,
+                 byrow = TRUE)
 
-#curve <- function(t) p0 + 2*(p1 - p0)*t + (p2 - 2*p1 + p0)*t^2
-curvex <- function(t) p0[1] + 2*(p1[1] - p0[1])*t + (p2[1] - 2*p1[1] + p0[1])*t^2
-curvey <- function(t) p0[2] + 2*(p1[2] - p0[2])*t + (p2[2] - 2*p1[2] + p0[2])*t^2
+cvt <- matrix(c(1, 0, 0,
+                     -2, 2, 0,
+                      1,-2, 1),
+                    nrow = 3,
+                    ncol = 3,
+                    byrow = TRUE)
+
+coeffs <- cvt %*% pts
+
+curvex <- function(t) coeffs[1,1] + coeffs[2,1]*t + coeffs[3,1]*t^2
+curvey <- function(t) coeffs[1,2] + coeffs[2,2]*t + coeffs[3,2]*t^2
 
 path <- data.frame(t=seq(0, 1, by=0.05))
 
@@ -12,6 +23,3 @@ path$x = curvex(path$t)
 path$y = curvey(path$t)
 
 with(path, plot(x,y, type="l"))
-points(p0[1], p0[2])
-points(p1[1], p1[2])
-points(p2[1], p2[2])
