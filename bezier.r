@@ -22,4 +22,5 @@ path <- data.frame(t=seq(0, 1, by=0.05))
 path$x = sapply(path$t, curvex)
 path$y = sapply(path$t, curvey)
 
-with(path, plot(x,y, type="l"))
+plot(pts[,1], pts[,2])
+with(path, lines(x,y, type="l"))
