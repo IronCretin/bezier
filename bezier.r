@@ -1,9 +1,10 @@
 pts <- matrix(
   c(
     0, 0,
-    0, 1,
+    0, 1/2,
+    2, 1,
     1, 0),
-  nrow = 3,
+  nrow = 4,
   ncol = 2,
   byrow = TRUE)
 
@@ -22,5 +23,5 @@ path <- data.frame(t=seq(0, 1, by=0.05))
 path$x = sapply(path$t, curvex)
 path$y = sapply(path$t, curvey)
 
-plot(pts[,1], pts[,2])
+plot(pts[,1], pts[,2], asp=1, type="b", col="darkgray")
 with(path, lines(x,y, type="l"))
