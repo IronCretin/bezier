@@ -5,7 +5,7 @@ pts <- matrix(
     1, 0,
     1, 1,
     2, 0,
-    2, 1
+    2, -1
     ),
   nrow = 6,
   ncol = 2,
@@ -27,7 +27,7 @@ curvex <- function(t) {
                   pts[offs+1, i],
                   2*pts[offs+2, i] - pts[offs+3, i],
                   pts[offs+2, i])
-    return(sum(controls * basis(3, 0:3, t)))
+    return(sum(controls * basis(3, 0:3, t %% 1)))
   }
 }
 curvey <- function(t) {
@@ -38,9 +38,10 @@ curvey <- function(t) {
     offs <- t %/% 1 * 2 + 1
     controls <- c(pts[offs,i],
                   pts[offs+1, i],
-                  2*pts[offs+2, i] - pts[offs+3, i],
+                  (2*pts[offs+2, i]) - pts[offs+3, i],
                   pts[offs+2, i])
-    return(sum(controls * basis(3, 0:3, t)))
+    print(controls)
+    return(sum(controls * basis(3, 0:3, t %% 1)))
   }
 }
 
