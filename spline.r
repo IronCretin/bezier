@@ -1,7 +1,7 @@
 pts <- matrix(
   c(
     0, 0,
-    0, 1,
+    .25, .25,
     1, 0,
     1, 1,
     2, 0,
@@ -50,5 +50,16 @@ path$x = sapply(path$t, curvex)
 path$y = sapply(path$t, curvey)
 
 with(path, plot(x,y, type="l", asp=1))
-
-lines(pts[,1], pts[,2], type="b", col="darkgray")
+for (i in 1:npts) {
+  offs <- i * 2 - 1
+  print(offs)
+  controls <- matrix(
+                c((2*pts[offs,]) - pts[offs+1,],
+                  pts[offs,],
+                  pts[offs+1,]),
+                  nrow = 3,
+                  ncol = 2,
+                  byrow = TRUE)
+  print(controls)
+  lines(controls[,1], controls[,2], type="b", col="darkgray")
+}
