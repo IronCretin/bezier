@@ -20,42 +20,33 @@ basis <- function(n, v, t) {
 
 npts <- nrow(pts)/2
 
-curvex <- function(t) {
-  i <- 1
+curve <- function(t) {
   if(t %% 1 == 0) {
-    return(pts[t*2+1,i])
+    return(pts[t*2+1,])
   } else {
     offs <- t %/% 1 * 2 + 1
-    controls <- c(pts[offs, i],
-                  pts[offs+1, i],
-                  2*pts[offs+2, i] - pts[offs+3, i],
-                  pts[offs+2, i])
-    return(sum(controls * basis(3, 0:3, t %% 1)))
+    controls <- matrix(
+      c(pts[offs,],
+        pts[offs+1,],
+        (2*pts[offs+2,]) - pts[offs+3,],
+        pts[offs+2,]),
+      nrow = 4,
+      ncol = 2,
+      byrow = TRUE)
+    bas <- matrix(basis(3, 0:3, t %% 1), nrow = 4, ncol = 2)
+    return(colSums(controls * bas))
   }
 }
-curvey <- function(t) {
-  i <- 2
-  if(t %% 1 == 0) {
-    return(pts[t*2+1,i])
-  } else {
-    offs <- t %/% 1 * 2 + 1
-    controls <- c(pts[offs,i],
-                  pts[offs+1, i],
-                  (2*pts[offs+2, i]) - pts[offs+3, i],
-                  pts[offs+2, i])
-    return(sum(controls * basis(3, 0:3, t %% 1)))
-  }
-}
+
 
 path <- data.frame(t=seq(0, npts - 1, by=0.05))
 
-path$x = sapply(path$t, curvex)
-path$y = sapply(path$t, curvey)
+path$x = sapply(path$t, curve)[1,]
+path$y = sapply(path$t, curve)[2,]
 
 with(path, plot(x,y, type="l", asp=1, xlim = xsc, ylim = ysc))
 for (i in 1:npts) {
   offs <- i * 2 - 1
-  print(offs)
   controls <- matrix(
                 c((2*pts[offs,]) - pts[offs+1,],
                   pts[offs,],
@@ -63,6 +54,5 @@ for (i in 1:npts) {
                   nrow = 3,
                   ncol = 2,
                   byrow = TRUE)
-  print(controls)
   lines(controls[,1], controls[,2], type="b", col="darkgray")
 }
