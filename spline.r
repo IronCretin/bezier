@@ -3,13 +3,16 @@ pts <- matrix(
     0, 0,
     .25, .25,
     1, 0,
-    1, 1,
+    2, 1,
     2, 0,
-    2, -1
+    2, -.5
     ),
   nrow = 6,
   ncol = 2,
   byrow = TRUE)
+
+xsc <- c(-.5, 2.5)
+ysc <- c(-1, 1)
 
 basis <- function(n, v, t) {
   return(choose(n, v) * (t^v) * (1-t)^(n-v))
@@ -49,7 +52,7 @@ path <- data.frame(t=seq(0, npts - 1, by=0.05))
 path$x = sapply(path$t, curvex)
 path$y = sapply(path$t, curvey)
 
-with(path, plot(x,y, type="l", asp=1))
+with(path, plot(x,y, type="l", asp=1, xlim = xsc, ylim = ysc))
 for (i in 1:npts) {
   offs <- i * 2 - 1
   print(offs)
