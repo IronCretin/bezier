@@ -40,7 +40,6 @@ curvey <- function(t) {
                   pts[offs+1, i],
                   (2*pts[offs+2, i]) - pts[offs+3, i],
                   pts[offs+2, i])
-    print(controls)
     return(sum(controls * basis(3, 0:3, t %% 1)))
   }
 }
